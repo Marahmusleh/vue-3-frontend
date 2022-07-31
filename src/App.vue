@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg bg-light">
       <a href="/" class="navbar-brand">WEBSTARTS</a>
       <div class="navbar-nav mr-auto">
-        <li >
+        <li class="nav-item">
           <router-link to="/home" class="nav-link">
             <font-awesome-icon icon="home" /> Home
           </router-link>

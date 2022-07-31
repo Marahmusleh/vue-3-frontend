@@ -5,13 +5,15 @@ const API_URL = 'http://localhost:8080/api/test/';
 
 class UserService {
 
-  getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+ async getUserBoard(id) {
+   const data= await axios.get(API_URL + 'user' +'/' + id , { headers: authHeader() });
+   console.log(data,"userDAta");
+   return data
   }
 
-  createArticle(user) {
+  createArticle(id,user) {
     return axios
-      .post(API_URL + 'createArticle', {
+      .post(API_URL + 'createArticle' + '/' + id, {
         img:user.img,
         title:user.title,
         text:user.text

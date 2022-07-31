@@ -23,8 +23,8 @@ export const auth = {
         }
       );
     },
-    createArticle({ commit }, user ) {
-      return UserService.createArticle(user).then(
+    createArticle({ commit }, id, user ) {
+      return UserService.createArticle(id,user).then(
         response => {
           commit('creationSuccess'); 
           console.log(response.data,"creation article data");

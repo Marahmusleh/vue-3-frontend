@@ -58,7 +58,7 @@
 </div>
       <h1>My Articles</h1>
       <br />
-      <div class="card mb-3" v-if="this.content">
+      <div class="card mb-3" v-if="this.loggedIn">
 <div class="row" >
   <div v-for="element in this.content" 
    class="col-sm-6"
@@ -66,13 +66,12 @@
     v-bind:key = "element.id">
   <div class="row g-0">
     <div class="col-md-4">
-      <img style="width:200px;height:360px"  v-bind:src="element.img" alt="">
+      <img src="https://c0.wallpaperflare.com/preview/71/610/431/advice-article-background-beverage.jpg" alt="pic" style="width:200px;height:360px" >
     </div>
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{element.title}}</h5>
         <p class="card-text">{{element.text}}</p>
-        <p class="card-text">Id: {{element.id}}</p>
          <p class="card-text"><small class="text-muted">createdAt: {{ moment(element.createdAt).format("YYYY-MM-DD") }}
                                 </small></p>
         <button type="button" @click="(event) => handelModalUpdate(element)" class="btn btn-primary" data-toggle="modal" data-target="#edit" data-whatever="@mdo">Edit</button>
@@ -157,7 +156,7 @@ export default {
       schema,
       createdArticle: false,
       content: "",
-      articleData:""
+      articleData:"",
     };
   },
   computed: {
@@ -178,14 +177,14 @@ export default {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
-   UserService.getArticle().then(
+   UserService.getUserBoard(this.currentUser.id).then(
       (response) => {
         console.log("marah");
-        this.content = response.data.article.sort((a, b)=> {
+        this.content = response.data.articles[0].article.sort((a, b)=> {
           console.log(a.createdAt, "old time");
           return new Date(b.createdAt) - new Date(a.createdAt);
         })
-        console.log(response.data.article, "gettt")
+       
       },
       (error) => {
         this.content =
@@ -201,7 +200,8 @@ export default {
     createBlog(user) {
       this.loading = true;
       this.createdArticle = false;
-      this.$store.dispatch("auth/createArticle", user ).then(
+      console.log(this.content,"dataa")
+      this.$store.dispatch("auth/createArticle", this.currentUser.id , user ).then(
         () => {
         this.createdArticle = true;
         this.$router.go()
@@ -246,11 +246,10 @@ export default {
     },
     handelModalUpdate(element){
       this.articleData=element;
-      console.log(this.articleData,"dataaaaaArticle");
-    }
-  },
+    },
     getImage(path) {
     return require(path)
+  }
   }
 };
 </script>
